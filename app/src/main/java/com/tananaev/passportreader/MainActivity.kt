@@ -92,6 +92,7 @@ abstract class MainActivity : AppCompatActivity() {
         val dateOfExpiry = intent.getStringExtra("dateOfExpiry")
         val passportNumber = intent.getStringExtra("passportNumber")
         encodePhotoToBase64 = intent.getBooleanExtra("photoAsBase64", false)
+
         if (dateOfBirth != null) {
             PreferenceManager.getDefaultSharedPreferences(this)
                 .edit().putString(KEY_BIRTH_DATE, dateOfBirth).apply()
