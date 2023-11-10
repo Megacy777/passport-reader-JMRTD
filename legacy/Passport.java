@@ -109,6 +109,7 @@ public class Passport {
 	private static final Provider BC_PROVIDER = JMRTDSecurityProvider.getBouncyCastleProvider();
 
 	private final static List<BACKeySpec> EMPTY_TRIED_BAC_ENTRY_LIST = Collections.emptyList();
+
 	private final static List<Certificate> EMPTY_CERTIFICATE_CHAIN = Collections.emptyList();
 
 	/** The hash function for DG hashes. */
@@ -229,6 +230,10 @@ public class Passport {
 			service.open();
 
 			/* Find out whether this MRTD supports PACE. */
+			/* Password Authenticated Connection Establishment (PACE). */
+			/* PACE belongs to the family of Password Authenticated Key Exchange (PAKE) protocols. */
+			/* PACE is standardized as the successor to Basic Access Control (BAC) for use in machine-readable travel documents (MRTD). */
+
 			PACEInfo paceInfo = null;
 			try {
 				LOGGER.info("Inspecting card access file");
