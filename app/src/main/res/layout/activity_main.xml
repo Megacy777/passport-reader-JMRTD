@@ -71,9 +71,9 @@
                     android:id="@+id/input_expiration_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusableInTouchMode="false"
                     android:hint="@string/input_expiration_date"
-                    android:inputType="date"
-                    android:focusableInTouchMode="false" />
+                    android:inputType="date" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
