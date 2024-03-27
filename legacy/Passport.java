@@ -156,14 +156,19 @@ public class Passport {
 		this.featureStatus = new FeatureStatus();
 		this.verificationStatus = new VerificationStatus();
 
-		this.random = new SecureRandom();
+		this.random = new SecureRandom(); //cryptographic pseudo-random number generator that is used to generate random numbers and cryptographic keys. It is used to ensure the security of cryptographic operations.
 
 		rsaAADigest = MessageDigest.getInstance("SHA1"); /* NOTE: for output length measurement only. -- MO */
+		//provides cryptographic hash functions, which are used to generate a fixed-size hash value from input data
+
 		rsaAASignature = Signature.getInstance("SHA1WithRSA/ISO9796-2", BC_PROVIDER);
+		//
+
 		rsaAACipher = Cipher.getInstance("RSA/NONE/NoPadding");
 
 		/* NOTE: These will be updated in doAA after caller has read ActiveAuthenticationSecurityInfo. */
 		ecdsaAASignature = Signature.getInstance("SHA256withECDSA", BC_PROVIDER);
+		
 		ecdsaAADigest = MessageDigest.getInstance("SHA-256"); /* NOTE: for output length measurement only. -- MO */
 	}
 
