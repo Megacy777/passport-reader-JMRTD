@@ -1,28 +1,41 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
     ndkVersion '23.1.7779620'
-
     defaultConfig {
         applicationId 'com.tananaev.passportreader'
         minSdkVersion 19
-        targetSdkVersion 33
-        versionCode 19
-        versionName '3.0'
+        targetSdkVersion 34
+        versionCode 20
+        versionName '3.1'
         multiDexEnabled = true
     }
     namespace 'com.tananaev.passportreader'
 
-    flavorDimensions 'default'
+    buildFeatures {
+        flavorDimensions = ['default']
+    }
     productFlavors {
         regular {
             isDefault = true
+            ext.enableCrashlytics = false
         }
         google
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     packagingOptions {
@@ -44,7 +57,7 @@ dependencies {
     implementation 'com.gemalto.jp2:jp2-android:1.0.3'
     implementation 'com.github.mhshams:jnbis:1.1.0'
     implementation 'org.bouncycastle:bcpkix-jdk15on:1.65' // do not update
-    implementation 'commons-io:commons-io:2.8.0'
+    implementation 'commons-io:commons-io:2.11.0'
     googleImplementation platform('com.google.firebase:firebase-bom:32.5.0')
     googleImplementation 'com.google.firebase:firebase-analytics-ktx'
     googleImplementation 'com.google.firebase:firebase-crashlytics'
@@ -52,18 +65,18 @@ dependencies {
     googleImplementation 'com.google.android.play:review-ktx:2.0.1'
 }
 
-if (getGradle().getStartParameter().getTaskRequests().toString().contains('Google')) {
-    apply plugin: 'com.google.gms.google-services'
-    apply plugin: 'com.google.firebase.crashlytics'
-
-    task copyJson(type: Copy) {
-        from '../../environment/firebase'
-        into '.'
-        include 'passport-reader.json'
-        rename('passport-reader.json', 'google-services.json')
-    }
-
-    afterEvaluate {
-        preBuild.dependsOn copyJson
+tasks.register('copyFirebaseConfig', Copy) {
+    from '../../environment/firebase'
+    into '.'
+    include 'passport-reader.json'
+    rename('passport-reader.json', 'google-services.json')
+}
+afterEvaluate {
+    tasks.matching { it.name.contains('Google') }.configureEach { task ->
+        if (task.name.contains('Regular')) {
+            task.enabled false
+        } else {
+            task.dependsOn copyFirebaseConfig
+        }
     }
 }
