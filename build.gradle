@@ -16,5 +16,10 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral() // Add mavenCentral repository if not already present
     }
+}
+
+dependencies {
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.69'
 }
